@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public enum FoodType: Codable {
+public enum FoodType: Codable, Sendable {
     case food
     case proteinPowder
 }

@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public struct Ingredient: Codable {
+public struct Ingredient: Codable, Sendable {
     
     public var id: Int
     public var amount: Double

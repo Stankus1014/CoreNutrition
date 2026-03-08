@@ -6,8 +6,8 @@
 //
 import Foundation
 
-public enum FoodFlavors : String, Codable {
+public enum FoodFlavors : String, Codable, Sendable {
     case cheesecake = "Cheesecake"
-    case Vanilla = "Vanilla"
-    case Chocolate = "Chocolate"
+    case vanilla = "Vanilla"
+    case chocolate = "Chocolate"
 }

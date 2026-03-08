@@ -6,8 +6,8 @@
 //
 import Foundation
 
-public enum CookedType: String, Codable, Hashable {
-    case Cooked = "Cooked"
-    case Uncooked = "Uncooked"
-    case None = "None"
+public enum CookedType: String, Codable, Hashable, Sendable {
+    case cooked = "cooked"
+    case uncooked = "uncooked"
+    case none = "none"
 }

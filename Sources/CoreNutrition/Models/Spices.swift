@@ -6,13 +6,13 @@
 //
 import Foundation
 
-public struct Spice: Codable {
+public struct Spice: Codable, Sendable {
     var spice: Spices
     var amount: Double?
     var servingType: ServingType?
 }
 
-public enum Spices: String, Codable {
+public enum Spices: String, Codable, Sendable {
     
     case salt
     case blackPepper

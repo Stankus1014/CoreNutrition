@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public enum ProteinPowderFlavors : String, Codable {
+public enum ProteinPowderFlavors : String, Codable, Sendable {
     
     // Optimum Nutrition
     case BananaCream = "Banana Cream"

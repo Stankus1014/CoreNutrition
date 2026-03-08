@@ -5,7 +5,7 @@
 //  Created by William Stankus on 3/8/26.
 //
 
-public enum ServingType : String, Codable, Hashable {
+public enum ServingType : String, Codable, Hashable, Sendable {
     
     case Serving = "Serving"
     case Slice = "Slice"
