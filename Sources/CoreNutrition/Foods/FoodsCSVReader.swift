@@ -82,6 +82,7 @@ public struct FoodsCSVReader {
                     foods[id - 1].macros[cookedType] = macros
                 }
             }
+            print("Read \(foods.count) foods")
             return foods
         }
         
