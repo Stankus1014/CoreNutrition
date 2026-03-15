@@ -15,7 +15,10 @@ public struct FoodsCSVReader {
         
         var foods: [Food] = []
         
-        guard let path = Bundle.main.path(forResource: "foods", ofType: "csv") else { return [] }
+        guard let path = Bundle.module.path(forResource: "foods", ofType: "csv") else {
+            print("Error loading food path")
+            return []
+        }
         
         do {
             let content = try String(contentsOfFile: path)

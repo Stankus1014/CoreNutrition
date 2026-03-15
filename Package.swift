@@ -22,6 +22,9 @@ let package = Package(
             name: "CoreNutrition",
             dependencies: [
                 .product(name: "Kingfisher", package: "Kingfisher")
+            ],
+            resources: [
+                .process("Foods/foods.csv")
             ]
         ),
 
