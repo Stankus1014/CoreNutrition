@@ -24,11 +24,15 @@ public struct FoodsCSVReader {
             let content = try String(contentsOfFile: path)
             var rows: [String] = content.components(separatedBy: "\n")
             rows.removeFirst()
+            rows.removeLast()
             
             for row in rows {
                 
                 let columns = row.components(separatedBy: ",")
-                guard let id : Int = Int(columns[0]) else { return [] }
+                guard let id : Int = Int(columns[0]) else {
+                    print("Error with id")
+                    return []
+                }
                 let name : String = columns[1]
                 let servingTypes: [ServingType] = getServingTypes(rawString: columns[2])
                 let cookedType : CookedType = CookedType(rawValue: columns[3]) ?? .none
@@ -60,7 +64,10 @@ public struct FoodsCSVReader {
                 }
                 else {
                     let columns = row.components(separatedBy: ",")
-                    guard let id : Int = Int(columns[0]) else { return []}
+                    guard let id : Int = Int(columns[0]) else {
+                        print("Error with id")
+                        return []
+                    }
                     let servingTypes: [ServingType] = getServingTypes(rawString: columns[2])
                     let cookedType : CookedType = CookedType(rawValue: columns[3]) ?? .none
                     var macros : [ServingType : Macros] = .init()
