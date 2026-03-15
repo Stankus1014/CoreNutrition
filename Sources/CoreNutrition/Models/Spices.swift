@@ -10,6 +10,12 @@ public struct Spice: Codable, Sendable, Hashable {
     var spice: Spices
     var amount: Double?
     var servingType: ServingType?
+    
+    public init(spice: Spices, amount: Double? = nil, servingType: ServingType? = nil) {
+        self.spice = spice
+        self.amount = amount
+        self.servingType = servingType
+    }
 }
 
 public enum Spices: String, Codable, Sendable {

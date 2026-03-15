@@ -17,6 +17,24 @@ public struct Ingredient: Codable, Sendable {
     public var proteinFlavor: ProteinPowderFlavors?
     public var foodFlavor: FoodFlavors?
     
+    public init(
+        id: Int,
+        amount: Double,
+        servingType: ServingType,
+        cookedType: CookedType,
+        spices: [Spice],
+        proteinFlavor: ProteinPowderFlavors? = nil,
+        foodFlavor: FoodFlavors? = nil
+    ) {
+        self.id = id
+        self.amount = amount
+        self.servingType = servingType
+        self.cookedType = cookedType
+        self.spices = spices
+        self.proteinFlavor = proteinFlavor
+        self.foodFlavor = foodFlavor
+    }
+    
 }
 
 
