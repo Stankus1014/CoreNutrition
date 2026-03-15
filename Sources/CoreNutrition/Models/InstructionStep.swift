@@ -7,6 +7,6 @@
 import Foundation
 
 public struct InstructionStep: Codable, Hashable {
-    var instructions: String
-    var image_url: String?
+    public var instructions: String
+    public var image_url: String?
 }
