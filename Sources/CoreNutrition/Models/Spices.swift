@@ -6,7 +6,7 @@
 //
 import Foundation
 
-public struct Spice: Codable, Sendable {
+public struct Spice: Codable, Sendable, Hashable {
     var spice: Spices
     var amount: Double?
     var servingType: ServingType?

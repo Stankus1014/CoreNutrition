@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct InstructionStep: Codable, Hashable {
+public struct InstructionStep: Codable, Hashable {
     var instructions: String
     var image_url: String?
 }
