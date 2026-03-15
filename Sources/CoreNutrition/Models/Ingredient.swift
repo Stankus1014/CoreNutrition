@@ -48,13 +48,7 @@ public extension Ingredient {
     var imageURL: String? {
         switch foodType {
         case .food:
-            var name = self.name
-            name = name.lowercased()
-            name = name.replacingOccurrences(of: "- ", with: "")
-            name = name.replacingOccurrences(of: " ", with: "_")
-            name = name.replacingOccurrences(of: "/", with: "_")
-            name = name.replacingOccurrences(of: "%", with: "%25")
-            return "https://s3.us-east-2.amazonaws.com/food.icons/Food_Icons/\(name).png"
+            return FoodHelper.getImageURL(ingredientName: self.name)
         case .proteinPowder:
             return nil
         }
@@ -63,8 +57,7 @@ public extension Ingredient {
     var name: String {
         switch foodType {
         case .food:
-            guard let food = FoodsDB.shared.getFood(by: self.id) else { return "" }
-            return food.name
+            return FoodHelper.getIngredientName(id: self.id)
         case .proteinPowder:
             return ""
         }

@@ -84,7 +84,7 @@ public struct IngredientEditableRow: View {
 #Preview {
     
     let ingredient = Ingredient(
-        id: 1,
+        id: 12,
         amount: 12,
         servingType: .Ounce,
         cookedType: .cooked,
