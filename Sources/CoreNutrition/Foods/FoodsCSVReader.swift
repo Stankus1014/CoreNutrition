@@ -34,7 +34,7 @@ public struct FoodsCSVReader {
                 let cookedType : CookedType = CookedType(rawValue: columns[3]) ?? .none
                 var macros : [ServingType : Macros] = .init()
                 
-                if (foods.count >= id) {
+                if (foods.count < id) {
                     var foodObj = Food(
                         id: id,
                         name: name,
