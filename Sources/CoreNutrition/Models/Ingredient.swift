@@ -19,6 +19,7 @@ public struct Ingredient: Codable, Sendable {
     
 }
 
+
 public extension Ingredient {
     
     var foodType: FoodType {
@@ -26,4 +27,104 @@ public extension Ingredient {
         return .food
     }
     
+    var imageURL: String? {
+        switch foodType {
+        case .food:
+            var name = self.name
+            name = name.lowercased()
+            name = name.replacingOccurrences(of: "- ", with: "")
+            name = name.replacingOccurrences(of: " ", with: "_")
+            name = name.replacingOccurrences(of: "/", with: "_")
+            name = name.replacingOccurrences(of: "%", with: "%25")
+            return "https://s3.us-east-2.amazonaws.com/food.icons/Food_Icons/\(name).png"
+        case .proteinPowder:
+            return nil
+        }
+    }
+    
+    var name: String {
+        switch foodType {
+        case .food:
+            guard let food = FoodsDB.shared.getFood(by: self.id) else { return "" }
+            return food.name
+        case .proteinPowder:
+            return ""
+        }
+    }
+    
+    var servingTypes: [ServingType] {
+        switch foodType {
+        case .food:
+            guard let food = FoodsDB.shared.getFood(by: self.id) else { return [] }
+            return food.servingTypes
+        case .proteinPowder:
+            return []
+        }
+    }
+    
+    var cookedTypes: [CookedType] {
+        switch foodType {
+        case .food:
+            guard let food = FoodsDB.shared.getFood(by: self.id) else { return [] }
+            return food.cookedTypes
+        case .proteinPowder:
+            return []
+        }
+    }
+    
+    var amountTitle: String {
+        return String(format: "%.1f", arguments: [self.amount])
+    }
+    
+    /// Serving Title
+    var servingTitle : String {
+        if self.cookedType == .none {
+            return String(format: "%@", arguments: [self.servingType.rawValue])
+        } else {
+            return String(format: "%@, %@", arguments: [self.servingType.rawValue, self.cookedType.rawValue])
+        }
+    }
+    
 }
+
+public extension Ingredient {
+    
+    var macros: Macros? {
+        guard let food = FoodsDB.shared.getFood(by: self.id),
+              let macros = food.macros[self.cookedType]?[self.servingType]
+        else {
+            return nil
+        }
+        return macros
+    }
+    
+    var proteinAmount: Double? {
+        guard let macros = macros else { return nil }
+        return macros.proteinPerServing * self.amount
+        
+    }
+    
+    var carbAmount: Double? {
+        guard let macros = macros else { return nil }
+        return macros.carbsPerServing * self.amount
+    }
+    
+    var fatAmount: Double? {
+        guard let macros = macros else { return nil }
+        return macros.fatPerServing * self.amount
+    }
+    
+    var totalCalories: Int? {
+        guard let proteinAmount = proteinAmount,
+              let carbAmount = carbAmount,
+              let fatAmount = fatAmount
+        else {
+            return nil
+        }
+        
+        return Int((proteinAmount * 4.0) + (carbAmount * 4.0) + (fatAmount * 9.0))
+    }    
+    
+}
+
+

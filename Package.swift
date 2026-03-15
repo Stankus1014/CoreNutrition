@@ -14,9 +14,15 @@ let package = Package(
             targets: ["CoreNutrition"]
         ),
     ],
+    dependencies: [
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.8.0")
+    ],
     targets: [
         .target(
-            name: "CoreNutrition"
+            name: "CoreNutrition",
+            dependencies: [
+                .product(name: "Kingfisher", package: "Kingfisher")
+            ]
         ),
 
     ]

@@ -1,20 +1,21 @@
 //
-//  FoodManager.swift
+//  FoodsDB.swift
 //  CoreNutrition
 //
 //  Created by William Stankus on 3/8/26.
 //
 
-public actor FoodManager {
+public struct FoodsDB: Sendable {
     
-    public static let shared = FoodManager()
+    public static let shared: FoodsDB = FoodsDB(foods: FoodsCSVReader().read())
     
-    internal var foods : [Food] = []
-        
-    private init() {}
+    public let foods: [Food]
+    
+    init(foods: [Food]) {
+        self.foods = foods
+    }
     
     public func getFood(by id: Int) -> Food? {
-        
         if self.foods.count >= id {
             return self.foods[id - 1]
         }
@@ -23,7 +24,7 @@ public actor FoodManager {
     
     // TODO: Get foods by category
 //    public func getFoods(by category: FoodCategory) -> [Eatable] {
-//        
+//
 //        switch category {
 //            case .Meats:
 //                return Array(Foods.shared.foods[0...79]).map { Eatable.food($0) }
@@ -44,27 +45,9 @@ public actor FoodManager {
 //        }
 //    }
     
-    internal func addFood(_ food: Food) {
-        self.foods.append(food)
-    }
-    
-    internal func addCookedType(id: Int, type: CookedType) {
-        self.foods[id - 1].cookedTypes.append(type)
-    }
-    
-    internal func exists(id: Int) -> Bool {
-        return (self.foods.count >= id) ? true : false
-    }
-    
-    internal func addMacros(id: Int, cookedType: CookedType, servingMacros: [ServingType : Macros]) {
-        self.foods[id - 1].macros[cookedType] = servingMacros
-    }
-    
-    
-    
 }
 
-public struct Food {
+public struct Food: Sendable {
     var id: Int
     var name: String
     var servingTypes: [ServingType]

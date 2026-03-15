@@ -6,8 +6,8 @@
 //
 import Foundation
 
-struct Macros : Codable, Sendable {
-    var proteinPerServing: Double
-    var carbsPerServing: Double
-    var fatPerServing: Double
+public struct Macros : Codable, Sendable {
+    public var proteinPerServing: Double
+    public var carbsPerServing: Double
+    public var fatPerServing: Double
 }

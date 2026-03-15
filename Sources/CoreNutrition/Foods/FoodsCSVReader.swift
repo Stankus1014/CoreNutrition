@@ -7,32 +7,15 @@
 
 import Foundation
 
-public actor FoodsCSVReader {
+public struct FoodsCSVReader {
         
-    public func read() async {
-        await readFoodCSV()
-    }
-
-    private func readFoodCSV() async {
+    func read() -> [Food] {
+    
+        print("READING")
         
-        func getServingTypes(rawString: String) -> [ServingType] {
-            
-            var types: [ServingType] = []
-            
-            let fields = rawString.split(separator: "/")
-            
-            for field in fields {
-                let type = ServingType(rawValue: String(field)) ?? .None
-                if type != .None { types.append(type) }
-            }
-            
-            return types
-            
-        }
+        var foods: [Food] = []
         
-        let foodManager = FoodManager.shared
-        
-        guard let path = Bundle.main.path(forResource: "foods", ofType: "csv") else { return }
+        guard let path = Bundle.main.path(forResource: "foods", ofType: "csv") else { return [] }
         
         do {
             let content = try String(contentsOfFile: path)
@@ -42,15 +25,13 @@ public actor FoodsCSVReader {
             for row in rows {
                 
                 let columns = row.components(separatedBy: ",")
-                guard let id : Int = Int(columns[0]) else { return }
+                guard let id : Int = Int(columns[0]) else { return [] }
                 let name : String = columns[1]
                 let servingTypes: [ServingType] = getServingTypes(rawString: columns[2])
                 let cookedType : CookedType = CookedType(rawValue: columns[3]) ?? .none
                 var macros : [ServingType : Macros] = .init()
                 
-                // Create New Object
-                if await foodManager.exists(id: id) {
-                    
+                if (foods.count >= id) {
                     var foodObj = Food(
                         id: id,
                         name: name,
@@ -72,20 +53,16 @@ public actor FoodsCSVReader {
                     }
                     
                     foodObj.macros[cookedType] = macros
-                    await foodManager.addFood(foodObj)
-                    
+                    foods.append(foodObj)
                 }
-                
-                // Add Onto Existing Object
                 else {
-                    
                     let columns = row.components(separatedBy: ",")
-                    guard let id : Int = Int(columns[0]) else { return }
+                    guard let id : Int = Int(columns[0]) else { return []}
                     let servingTypes: [ServingType] = getServingTypes(rawString: columns[2])
                     let cookedType : CookedType = CookedType(rawValue: columns[3]) ?? .none
                     var macros : [ServingType : Macros] = .init()
                     
-                    await foodManager.addCookedType(id: id, type: cookedType)
+                    foods[id - 1].cookedTypes.append(cookedType)
                     
                     // Get Macros
                     for (index,type) in servingTypes.enumerated() {
@@ -99,13 +76,32 @@ public actor FoodsCSVReader {
                                               fatPerServing: fat)
                     }
                     
-                    await foodManager.addMacros(id: id, cookedType: cookedType, servingMacros: macros)
+                    foods[id - 1].macros[cookedType] = macros
                 }
             }
+            return foods
         }
         
-        catch { print(error) }
+        catch {
+            print(error)
+            return []
+        }
         
+        
+    }
+    
+    private func getServingTypes(rawString: String) -> [ServingType] {
+        
+        var types: [ServingType] = []
+        
+        let fields = rawString.split(separator: "/")
+        
+        for field in fields {
+            let type = ServingType(rawValue: String(field)) ?? .None
+            if type != .None { types.append(type) }
+        }
+        
+        return types
     }
     
 }
